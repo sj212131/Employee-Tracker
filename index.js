@@ -83,7 +83,7 @@ function mainMenu() {
                     break;
 
                 case "Add employee": // --11
-                    const addEmployee = "Add Employee"
+                    const addEmployee = "ADD"
                     positionArray.NoRepeats(EmpInfoPrompts, addEmployee);
                     break;
 
@@ -97,7 +97,7 @@ function mainMenu() {
                     positionArray.NoRepeats(EmpInfoPrompts, updateRole);
 
                 case "Update employee manager": // --14
-                    const updateManager = "UPDATE EMP MANAGER";
+                    const updateManager = "Update Employee Manager";
                     positionArray.NoRepeats(EmpInfoPrompts, updateManager);
                     break;
 
@@ -205,14 +205,15 @@ function EmpInfoPrompts(compRoles, actionChoice){
                     addEmp(emp_info, managerObjArr);
                 })
             })
-        } else if (actionChoice == "VIEW BY MANAGER") {
+        } else if (actionChoice === "VIEW BY MANAGER") {
             viewAllEmpManager(managerObjArr, managerNamesArr);
-        } else {
+        }
+         else {
             Promise.all([first_name.ask(), last_name.ask()]).then(prompts => {
                 inquirer.prompt(prompts).then(emp_info => {
-                    if (actionChoice == "UPDATE EMP ROLE") {
+                    if (actionChoice == "Update Employee Role") {
                         EmpMultiplesCheck(emp_info, actionChoice, compRoles);
-                    } else if (actionChoice == "UPDATE EMP MANAGER") {
+                    } else if (actionChoice == "Update Employee Manager") {
                         EmpMultiplesCheck(emp_info, actionChoice, managerObjArr, managerNamesArr);
                     } else {
                         EmpMultiplesCheck(emp_info, actionChoice);
@@ -316,27 +317,27 @@ function EmpMultiplesCheck(emp_info, actionChoice, arrayNeededForNextStep){
                 const chosenEmpID = chosenEmpInfo[0];
                 const chosenEmpRole = chosenEmpInfo[3];
 
-                if (actionChoice === "DELETE") {
+                if (actionChoice === "Delete Employee") {
                     deleteEmp(chosenEmpFirstName, chosenEmpLastName, chosenEmpID);
-                } else if (actionChoice === "UPDATE EMP ROLE") {
+                } else if (actionChoice === "Update Employee Role") {
                     updateEmpRole(chosenEmpID, arrayNeededForNextStep);
-                } else if (actionChoice === "UPDATE EMP MANAGER") {
+                } else if (actionChoice === "Update Employee Manager") {
                     updateEmpManager(chosenEmpID, arrayNeededForNextStep);
                 }
             })
 
-        } else if (res[0].id == "undefined") {
+        } else if (res[0].id === "undefined" || 0 ) {
             console.log("Could not find employee. Rerouted to Main Menu")
             mainMenu();
 
         } else {
             console.log("One Employee Found!")
 
-            if (actionChoice === "DELETE") {
+            if (actionChoice === "Delete Employee") {
                 deleteEmp(empFirstName, empLastName, res[0].id)
-            } else if (actionChoice === "UPDATE EMP ROLE") {
+            } else if (actionChoice === "Update Employee Role") {
                 updateEmpRole(res[0].id, arrayNeededForNextStep);
-            } else if (actionChoice === "UPDATE EMP MANAGER") {
+            } else if (actionChoice === "Update Employee Manager") {
                 updateEmpManager(res[0].id, arrayNeededForNextStep);
             }
         }
