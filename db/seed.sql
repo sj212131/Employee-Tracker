@@ -13,9 +13,9 @@ VALUES
     ("Salesperson", 80000, 1),
     ("lead Engineer", 150000, 2),
     ("Software Engineer", 120000, 2),
-    ("Accountant", 125000, 2),
-    ("Legal Team Lead", 250000 , 3),
-    ("Lawyer", 190000, 3),
+    ("Accountant", 125000, 3),
+    ("Legal Team Lead", 250000 , 4),
+    ("Lawyer", 190000, 4),
     ("Lead Engineer", 150000, 2);
 -- SELECT * FROM role;
 
