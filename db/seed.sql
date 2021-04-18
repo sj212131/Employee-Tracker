@@ -4,7 +4,7 @@ INSERT INTO department (name)
 		("Sales"), -- ID: 1
 		("Engineering"), -- ID: 2
 		("Accounting"),-- ID: 3
-		("Sales");-- ID: 4
+		("Legal");-- ID: 4
 -- SELECT * FROM department;
 
 INSERT INTO role (title, salary, department_ID) 
