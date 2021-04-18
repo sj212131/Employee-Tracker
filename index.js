@@ -11,7 +11,7 @@ const SQLquery = require('./lib/Sql_query');
 const { viewAllEmpByDep } = require('./lib/questions');
 
 //Text title - worked
-console.log(figlet.textSync('Employee Management', {
+console.log(figlet.textSync('Employee Management System', {
     font: 'Standard',
     horizontalLayout: 'default',
     verticalLayout: 'default'
@@ -199,8 +199,9 @@ function EmpInfoPrompts(compRoles, actionChoice){
         
         const emp_manager = new InquirerFunctions('list', 'employee_manager', questions.addEmployee4, managerNamesArr);
 
-        if (actionChoice == "ADD") { 
-            Promise.all([first_name.ask(), last_name.ask(), emp_role.ask(), emp_manager.ask()]).then(prompts => {
+        if (actionChoice === "ADD") { 
+            Promise.all([first_name.ask(), last_name.ask(), emp_role.ask(), emp_manager.ask()])
+            .then(prompts => {
                 inquirer.prompt(prompts).then(emp_info => {
                     addEmp(emp_info, managerObjArr);
                 })
@@ -209,17 +210,19 @@ function EmpInfoPrompts(compRoles, actionChoice){
             viewAllEmpManager(managerObjArr, managerNamesArr);
         }
          else {
-            Promise.all([first_name.ask(), last_name.ask()]).then(prompts => {
-                inquirer.prompt(prompts).then(emp_info => {
-                    if (actionChoice == "Update Employee Role") {
-                        EmpMultiplesCheck(emp_info, actionChoice, compRoles);
-                    } else if (actionChoice == "Update Employee Manager") {
-                        EmpMultiplesCheck(emp_info, actionChoice, managerObjArr, managerNamesArr);
-                    } else {
-                        EmpMultiplesCheck(emp_info, actionChoice);
-                    }
+            Promise.all([first_name.ask(), last_name.ask()])
+                .then(prompts => {
+                    inquirer.prompt(prompts)
+                    .then(emp_info => {
+                        if (actionChoice === "Update Employee Role") {
+                            EmpMultiplesCheck(emp_info, actionChoice, compRoles);
+                        } else if (actionChoice === "Update Employee Manager") {
+                            EmpMultiplesCheck(emp_info, actionChoice, managerObjArr, managerNamesArr);
+                        } else {
+                            EmpMultiplesCheck(emp_info, actionChoice);
+                        }
+                    })
                 })
-            })
         }
     })
 };
@@ -418,18 +421,18 @@ function updateEmpRole(employeeID, RolesArray) {
                 `SELECT role.id
                     FROM role
                     Where role.title = (?);`
-    inquirer.prompt([empNewRole.ask()]).then(chosenRole => {
+    inquirer
+        .prompt([empNewRole.ask()])
+        .then(chosenRole => {
+            connection.query(queryGetRoleId, chosenRole.employee_role, function (err, res) {
+                if (err) throw err;
 
-        connection.query(queryGetRoleId, chosenRole.employee_role, function (err, res) {
-            if (err) throw err;
-
-            const queryUpdateRoleId = 
-                        `UPDATE employee
-                            SET employee.role_id = (?)
-                            WHERE employee.id = (?)`
+                const queryUpdateRoleId = 
+                            `UPDATE employee
+                                SET employee.role_id = (?)
+                                WHERE employee.id = (?)`
 
             const updateEmpRoleId = new SQLquery(queryUpdateRoleId, [res[0].id, employeeID])
-
             updateEmpRoleId.update(mainMenu, "Employee Role Updated!");
         })
     })
@@ -447,7 +450,6 @@ function updateEmpManager(employeeID, managerObjectArray) {
         if (err) throw err;
 
         const currentManagerID = res[0].manager_id;
-
         const managerChoices = managerObjectArray.filter(manager => {
             if (manager.ID != currentManagerID) {
                 return true;
@@ -462,21 +464,23 @@ function updateEmpManager(employeeID, managerObjectArray) {
 
         const newManagerChoice = new InquirerFunctions('list', 'new_Manager', questions.newManager, possibleNewManagerNames)
 
-        inquirer.prompt([newManagerChoice]).then(userChoice => {
-            const userInputSplitAtId = userChoice.new_Manager.split(" ", 2);
-            const newManagerID = userInputSplitAtId[1];
+        inquirer
+            .prompt([newManagerChoice])
+            .then(userChoice => {
+                const userInputSplitAtId = userChoice.new_Manager.split(" ", 2);
+                const newManagerID = userInputSplitAtId[1];
 
-            const queryUpdateNewManager = 
-                                `UPDATE employee
-                                    SET employee.manager_id = (?)
-                                    WHERE employee.id = (?)`
+                const queryUpdateNewManager = 
+                                    `UPDATE employee
+                                        SET employee.manager_id = (?)
+                                        WHERE employee.id = (?)`
 
-            connection.query(queryUpdateNewManager, [newManagerID, employeeID], function (err, res) {
-                if (err) throw err;
-                console.log("Manager Updated!");
-                mainMenu();
+                connection.query(queryUpdateNewManager, [newManagerID, employeeID], function (err, res) {
+                    if (err) throw err;
+                    console.log("Manager Updated!");
+                    mainMenu();
+                })
             })
-        })
     })
 }
 
