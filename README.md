@@ -38,7 +38,7 @@ for future reference
 You are required to submit BOTH of the following for review:
 
 * The URL of the video demonstrating the entirety of the app's functionality
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        https://www.youtube.com/watch?v=77Hc2QC3cq0&ab_channel=LilGreen
         
 * The URL of the GitHub repository that contains your code. Give the repository a unique name and include a README file that describes the project.
         https://github.com/sj212131/Homework-April-24
