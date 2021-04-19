@@ -18,9 +18,7 @@ Please ensure running "npm i" to install all dependencies.(node, inquirer, and M
 --------------------------------------------------------------------------------------------------
 Usage （purpose）
 
-Please enter "node index" at your terminal. Please ensure installed all dependencies.
-
-Or visit Deployed application at heroku, URL approved below.
+App start: Please enter "node index" or "npm start" at your terminal. Please ensure installed all dependencies.
 
 --------------------------------------------------------------------------------------------------
 
